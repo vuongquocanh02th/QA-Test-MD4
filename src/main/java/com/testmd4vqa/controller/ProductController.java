@@ -4,6 +4,9 @@ import com.testmd4vqa.model.Product;
 import com.testmd4vqa.service.ICategoryService;
 import com.testmd4vqa.service.IProductService;
 import com.testmd4vqa.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +25,11 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public String listProduct(Model model){
-        List<Product> products = iProductService.getAllProducts();
-        model.addAttribute("products", products);
+    public String listProduct(@RequestParam(defaultValue = "0") int page, Model model){
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Product> productPage = iProductService.getAllProducts(pageable);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("currentPage", page);
         return "/list";
     }
     @GetMapping("/add")

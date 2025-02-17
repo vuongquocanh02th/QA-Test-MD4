@@ -3,6 +3,8 @@ package com.testmd4vqa.service;
 import com.testmd4vqa.model.Product;
 import com.testmd4vqa.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class ProductService implements IProductService{
 
 
     @Override
-    public List<Product> getAllProducts() {
-        return iProductRepository.findAll();
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return iProductRepository.findAll(pageable);
     }
 
     @Override
