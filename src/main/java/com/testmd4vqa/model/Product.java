@@ -1,8 +1,10 @@
 package com.testmd4vqa.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "product")
 public class Product {
     @Id
@@ -13,6 +15,6 @@ public class Product {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "product_category")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 }

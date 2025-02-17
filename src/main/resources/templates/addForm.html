@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Product</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Title Styling */
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            background: white;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Label Styling */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Input Styling */
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        /* Input Focus Effect */
+        input:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* Submit Button Styling */
+        button {
+            margin-top: 15px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<h2>Add Product</h2>
+<form th:action="@{/products/add}" method="post" th:object="${products}">
+    <label>Product Name:</label>
+    <input type="text" th:field="*{name}" required minlength="5" maxlength="50"/><br/>
+
+    <label>Price:</label>
+    <input type="number" th:field="*{price}" required min="100000"/><br/>
+
+    <label>Category:</label>
+    <select th:field="*{category}" required>
+        <option value="">-- Select category --</option>
+        <option th:each="category : ${categories}" th:value="${category.cId}" th:text="${category.name}"></option>
+    </select><br/>
+
+    <label>Status:</label>
+    <input type="text" th:field="*{status}" required/><br/>
+
+    <button type="submit">Add</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirm Delete</title>
+</head>
+<body>
+<h2>Confirm Delete</h2>
+<p>Sure to Delete?</p>
+<form th:action="@{/delete/{id}(id=${product.id})}" method="post">
+    <button type="submit">Delete</button>
+    <a href="/list">Cancel</a>
+</form>
+</body>
+</html>
