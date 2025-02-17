@@ -32,4 +32,9 @@ public class ProductService implements IProductService{
     public void deleteProduct(Long id) {
         iProductRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Product> searchProducts(String name, Long category, String status, Pageable pageable) {
+        return iProductRepository.searchProducts(name, category, status, pageable);
+    }
 }

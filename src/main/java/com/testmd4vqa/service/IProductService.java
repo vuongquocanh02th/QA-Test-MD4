@@ -10,4 +10,5 @@ public interface IProductService {
     Page<Product> getAllProducts(Pageable pageable);
     Product saveProduct(Product product);
     void deleteProduct(Long id);
+    Page<Product> searchProducts(String name, Long category, String status, Pageable pageable);
 }

@@ -19,19 +19,39 @@ public class ProductController {
     private final IProductService iProductService;
     private final ICategoryService iCategoryService;
 
-    public ProductController(IProductService iProductService, ICategoryService iCategoryService){
+    public ProductController(IProductService iProductService, ICategoryService iCategoryService) {
         this.iProductService = iProductService;
         this.iCategoryService = iCategoryService;
     }
 
     @GetMapping("/list")
-    public String listProduct(@RequestParam(defaultValue = "0") int page, Model model){
+    public String listProduct(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long category,
+            @RequestParam(required = false) String status,
+            Model model) {
+
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Product> productPage = iProductService.getAllProducts(pageable);
+        Page<Product> productPage;
+
+        if (name != null || category != null || status != null) {
+            productPage = iProductService.searchProducts(name, category, status, pageable);
+        } else {
+            productPage = iProductService.getAllProducts(pageable); // ✅ Gọi đúng phương thức getAllProducts()
+        }
+
+
         model.addAttribute("productPage", productPage);
         model.addAttribute("currentPage", page);
+        model.addAttribute("categories", iCategoryService.getAllCategories()); // Lấy danh sách loại sản phẩm
+        model.addAttribute("name", name);
+        model.addAttribute("category", category);
+        model.addAttribute("status", status);
+
         return "/list";
     }
+
     @GetMapping("/add")
     public String addProductForm(Model model) {
         model.addAttribute("products", new Product());

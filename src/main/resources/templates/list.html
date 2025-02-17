@@ -28,6 +28,49 @@
             margin-bottom: 20px;
         }
 
+        /* Search Form Styling */
+        form {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        form input, form select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        form a {
+            text-decoration: none;
+            color: white;
+            background-color: #dc3545;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        form a:hover {
+            background-color: #c82333;
+        }
+
         /* Table Styling */
         table {
             width: 80%;
@@ -72,7 +115,7 @@
         }
 
         /* Add Product Button */
-        a {
+        .add-product {
             display: inline-block;
             margin-top: 20px;
             background-color: #28a745;
@@ -83,9 +126,10 @@
             transition: 0.3s;
         }
 
-        a:hover {
+        .add-product:hover {
             background-color: #218838;
         }
+
         /* Pagination Styling */
         .pagination {
             display: flex;
@@ -114,12 +158,34 @@
             font-weight: bold;
             color: #333;
         }
-
     </style>
 </head>
 <body>
 <h2>Product List</h2>
-<a href="/products/add">Add Product</a>
+
+<!-- Search Form -->
+<form th:action="@{/products/list}" method="get">
+    <label for="name">Product Name:</label>
+    <input type="text" id="name" name="name" th:value="${name}">
+
+    <label for="category">Category:</label>
+    <select id="category" name="category">
+        <option value="">-- All Categories --</option>
+        <option th:each="cat : ${categories}" th:value="${cat.cId}" th:text="${cat.name}"
+                th:selected="${category != null && category == cat.cId}"></option>
+    </select>
+
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" th:value="${status}">
+
+    <button type="submit">Search</button>
+    <a href="/products/list">Reset</a>
+</form>
+
+<!-- Add Product Button -->
+<a href="/products/add" class="add-product">Add Product</a>
+
+<!-- Product Table -->
 <table border="1">
     <thead>
     <tr>
@@ -146,10 +212,12 @@
     </tr>
     </tbody>
 </table>
+
+<!-- Pagination -->
 <div class="pagination">
-    <a th:if="${productPage.hasPrevious()}" th:href="@{/products/list(page=${currentPage - 1})}">« Previous</a>
+    <a th:if="${productPage.hasPrevious()}" th:href="@{/products/list(page=${currentPage - 1}, name=${name}, category=${category}, status=${status})}">« Previous</a>
     <span>Page [[${currentPage + 1}]] of [[${productPage.totalPages}]]</span>
-    <a th:if="${productPage.hasNext()}" th:href="@{/products/list(page=${currentPage + 1})}">Next »</a>
+    <a th:if="${productPage.hasNext()}" th:href="@{/products/list(page=${currentPage + 1}, name=${name}, category=${category}, status=${status})}">Next »</a>
 </div>
 
 </body>
